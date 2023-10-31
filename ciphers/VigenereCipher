@@ -1,0 +1,97 @@
+
+
+/* A brief description of the role of this class:
+ * An Encryptable class that uses a Vigenere cipher to encrypt/decrypt strings
+
+
+ * Student Name: Jeffin Tom
+
+ * Student Number:041094535
+
+ * Course: CST8132 Object Oriented Programming
+
+ * Program: CET-CS-Level 2
+
+ * Professor:  James Mwangi PhD.
+
+ *
+
+ */
+
+package ciphers;
+import encryption.Encryptable;
+/**
+ * 
+ * @author leoje
+ *
+ */
+	// uses the values from encryptable interface
+	public class VigenereCipher implements Encryptable {
+	    private String key;
+	    private int keyLength;
+
+	 // Constructs a VigenereCipher object with the specified password.
+	    public VigenereCipher(String password) {
+	        this.key = password;
+	        this.keyLength = password.length();
+	    }
+
+	    /**
+	     * @Override
+	     */
+	    
+	    // Encrypts the given input string using the Vigenere cipher algorithm.
+	    //for the calcution of the encrypt class
+	    public String encrypt(String input) {
+	        StringBuilder encryptedText = new StringBuilder();
+	        int keyIndex = 0;  // Index to keep track of the current key character
+	        for (char chara : input.toCharArray()) {  // Iterate over each character in the input string
+	        	// Calculate the shift value based on the current key character
+	        	if (chara >= START_CHAR && chara <= END_CHAR) {
+	        		//
+	                int shift = key.charAt(keyIndex % keyLength) - START_CHAR;
+	                int shiftedChar = chara + shift;
+	                if (shiftedChar > END_CHAR) {
+	                    shiftedChar = START_CHAR + (shiftedChar - END_CHAR - 1);
+	                } else if (shiftedChar < START_CHAR) {
+	                    shiftedChar = END_CHAR - (START_CHAR - shiftedChar - 1);
+	                }
+	                // appended the encrypted char to result
+	                encryptedText.append((char) shiftedChar);
+	                keyIndex++;// move to next key char
+	            } else {
+	            	// not in range, then its unchanged
+	                encryptedText.append(chara);
+	            } 
+	        }
+	        return encryptedText.toString(); 
+	    }
+
+	    /**
+	     * @Override
+	     */
+	    
+	    // Decrypts the given input string using the Vigenere cipher algorithm.
+	    //for the calcution of the decrypt class
+	    public String decrypt(String input) {
+	        StringBuilder decryptedText = new StringBuilder();
+	        int keyIndex = 0; // index to keep track of each char
+	        for (char chara : input.toCharArray()) {
+	            if (chara >= START_CHAR && chara <= END_CHAR) {
+	                int shift = key.charAt(keyIndex % keyLength) - START_CHAR;
+	                int shiftedChar = chara - shift;
+	                if (shiftedChar > END_CHAR) {
+	                    shiftedChar = START_CHAR + (shiftedChar - END_CHAR - 1);
+	                } else if (shiftedChar < START_CHAR) {
+	                    shiftedChar = END_CHAR - (START_CHAR - shiftedChar - 1);
+	                }
+	                decryptedText.append((char) shiftedChar);
+	                keyIndex++;
+	            } else {
+	                decryptedText.append(chara);
+	            }
+	        }
+	        return decryptedText.toString();// Convert the decrypted text to a string and return it
+	    
+	    }
+}
